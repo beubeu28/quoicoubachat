@@ -16,6 +16,8 @@
         {% for article in articles %}
             {{article.nom}}
             <img src="{{article.image}}"></img>
+            <a href="{{ path('app_article_add', {'id':article.id}) }}">ajouter</a>
+
         {%endfor%}
     </ul>
 </div>
