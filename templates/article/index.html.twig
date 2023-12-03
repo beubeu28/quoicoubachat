@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Article index</h1>
 
+    <label>Bienvenue  {{ app.user.prenom }} {{ app.user.nom }}</label>
     <table class="table">
         <thead>
             <tr>
@@ -29,6 +30,7 @@
                 <td>
                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+                    <a href="{{ path('app_article_add', {'id':article.id}) }}">ajouter</a>
                 </td>
             </tr>
         {% else %}

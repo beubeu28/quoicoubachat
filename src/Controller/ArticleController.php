@@ -42,6 +42,27 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    #[Route('/add', name: 'app_article_add', methods: ['GET', 'POST'])]
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('article/new.html.twig', [
+            'article' => $article,
+            'form' => $form,
+        ]);
+    }
+
+
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
     {
