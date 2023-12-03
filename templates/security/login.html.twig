@@ -3,29 +3,43 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+
+<section class="flex flex-col items-center justify-center w-screen h-screen bg-pink-200 text-gray-700">
+
+<h1 class="p-8 font-bold text-2xl">Connexion</h1>
+
 <form method="post">
+
+
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    
+
+    <div class="w-96 p-12 bg-white rounded shadow-lg" >
+
+        <div class="form-field">
+            <label class="font-semibold text-xs">Email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="flex items-center h-12 px-4 w-64 border-2 border-pink-200 border-opacity-100 bg-white mt-2 rounded focus:outline-none focus:ring-2 form-control" autocomplete="email" required autofocus>
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
+        <div class="form-field">
+            <label class="font-semibold text-xs mt-3" for="inputPassword">Mot de passe</label>
+            <input type="password" name="password" id="inputPassword" autocomplete="current-password" required class= "flex items-center h-12 px-4 w-64 border-2 border-pink-200 border-opacity-100 bg-white mt-2 rounded focus:outline-none focus:ring-2 form-control">
+        </div>
+        
+      
+        <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
-    >
+        >
+        <button class="flex items-center justify-center h-12 px-6 w-64 bg-pink-200 mt-8 rounded font-semibold text-sm text-gray-700 hover:bg-pink-500" type="submit">
+            Connexion
+        </button>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
+
+    </div>
+    
 </form>
+</section>
 {% endblock %}
