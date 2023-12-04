@@ -40,9 +40,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateurid', targetEntity: Commande::class)]
     private Collection $commandes;
 
+
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Messagerie::class)]
+    private Collection $messageries;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $telephone = null;
+
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
+        $this->messageries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,6 +174,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $commande->setUtilisateurid(null);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Messagerie>
+     */
+    public function getMessageries(): Collection
+    {
+        return $this->messageries;
+    }
+
+    public function addMessagery(Messagerie $messagery): static
+    {
+        if (!$this->messageries->contains($messagery)) {
+            $this->messageries->add($messagery);
+            $messagery->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagery(Messagerie $messagery): static
+    {
+        if ($this->messageries->removeElement($messagery)) {
+            // set the owning side to null (unless already changed)
+            if ($messagery->getUtilisateur() === $this) {
+                $messagery->setUtilisateur(null);
+            }
+        }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
 
         return $this;
     }
