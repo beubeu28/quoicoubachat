@@ -22,7 +22,7 @@ class AccueilController extends AbstractController
     public function Rechercher(Request $request, ArticleRepository $articleRepository): Response
     {
         $Rechercher = $request->query->get('Rechercher');
-        $articles = $articleRepository->filtre($Rechercher);
+        $articles = $articleRepository->filtre($Rechercher, null, null, null, null, null);
 
         return $this->render('article/index.html.twig', [
             'Rechercher' => $Rechercher,
