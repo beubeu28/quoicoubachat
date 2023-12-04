@@ -40,8 +40,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateurid', targetEntity: Commande::class)]
     private Collection $commandes;
 
+
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Messagerie::class)]
     private Collection $messageries;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $telephone = null;
+
 
     public function __construct()
     {
@@ -173,6 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     /**
      * @return Collection<int, Messagerie>
      */
@@ -199,6 +205,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $messagery->setUtilisateur(null);
             }
         }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
 
         return $this;
     }
