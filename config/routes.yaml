@@ -1,3 +1,10 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+article_detail:
+    path: '/article/{articleId}'
+    controller: 'App\Controller\ArticleController::Detail'
+    methods: ['GET']
+    requirements:
+        articleId: '\d+'  # Cette contrainte assure que articleId est un nombre
