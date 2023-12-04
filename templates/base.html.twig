@@ -34,7 +34,7 @@
     <nav class="nav font-semibold text-lg">
         <ul class="flex items-center">
             <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer active">
-              <a href="http://127.0.0.1:8000/">Accueil</a>
+              <a href="{{ path('app_accueil') }}">Accueil</a>
             </li>
             <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
               <a href="">Produits</a>
@@ -43,7 +43,12 @@
               <a href="/article">Collections</a>
             </li>
             <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
-              <a href="">Contact</a>
+            {% if is_granted('ROLE_ADMIN') %}
+              <a href="{{ path('app_messagerie_index') }}">Contact</a>
+            {% else %}
+              <a href="{{ path('app_messagerie_new') }}">Contact</a>
+            {% endif %}
+            
             </li>
         </ul>
     </nav>
