@@ -52,8 +52,19 @@
       .mt-2 {margin-bottom: 25%;text-align: center;}
       .text-gray-500 {font-family: 'Franklin Gothic', sans-serif;font-size: 22px; margin-bottom: 10%;}
   </style>
-   <section>
+
+  <section>
     <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <header class="text-center">
+        <h2 style="color: #E3618E; font-family: 'Franklin Gothic', sans-serif;font-size: 30px;" class="font-bold sm:text-3xl">Collection des articles de QuoiCouB'Achat</h2>
+
+        <p class="text-gray-500">
+          Retrouvez notre collection de figurine Pokémon, Naruto, One Piece... Ainsi que des vêtements et autres !!! UwU
+        </p>
+      </header>
+
+      <section>
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-1 lg:px-8">
       <header class="text-center">
         <form action="{{ path('trier') }}" method="GET">
           <select name="Type" class=" border border-grey-200 rounded overflow-hidden w-650" >
@@ -90,15 +101,9 @@
     </div>
   </section>
 
-  <section>
-    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-      <header class="text-center">
-        <h2 style="color: #E3618E; font-family: 'Franklin Gothic', sans-serif;font-size: 30px;" class="font-bold sm:text-3xl">Collection des articles de QuoiCouB'Achat</h2>
-
-        <p class="text-gray-500">
-          Retrouvez notre collection de figurine Pokémon, Naruto, One Piece... Ainsi que des vêtements et autres !!! UwU
-        </p>
-      </header>
+      {% if articles is empty %}
+        <p class="text-pink-400 font-bold text-center mt-12">Aucun résultat trouvé.</p>
+      {% endif %}
 
       <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {% for article in articles %}
