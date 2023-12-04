@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article index{% endblock %}
-
+{% block title %}Collection{% endblock %}
+{#
 {% block body %}
+    
     <h1>Article index</h1>
-
-    <label>Bienvenue  {{ app.user.prenom }} {{ app.user.nom }}</label>
+    
     <table class="table">
         <thead>
             <tr>
@@ -16,6 +16,7 @@
                 <th>Stock</th>
                 <th>Image</th>
                 <th>actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -26,9 +27,9 @@
                 <td>{{ article.prix }}</td>
                 <td>{{ article.description }}</td>
                 <td>{{ article.stock }}</td>
-                <td>{{ article.image }}</td>
+                <td><img src="{{ article.image }}" style="width: 200px; height: 200px; object-fit: contain;"></td>
                 <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
+                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a> 
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
                     <a href="{{ path('app_article_add', {'id':article.id}) }}">ajouter</a>
                 </td>
@@ -42,4 +43,50 @@
     </table>
 
     <a href="{{ path('app_article_new') }}">Create new</a>
+{% endblock %}
+-----------------------------------------------------------------------------------------------------------------------#}
+
+
+{% block body %}
+<style>
+    .mt-2 {margin-bottom: 25%;text-align: center;}
+    .text-gray-500 {font-family: 'Franklin Gothic', sans-serif;font-size: 22px; margin-bottom: 10%;}
+</style>
+
+<section>
+  <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <header class="text-center">
+      <h2 style="color: #E3618E; font-family: 'Franklin Gothic', sans-serif;font-size: 30px;" class="font-bold sm:text-3xl">Collection des articles de QuoiCouB'Achat</h2>
+
+      <p class="text-gray-500">
+        Retrouvez notre collection de figurine Pokémon, Naruto, One Piece... Ainsi que des vêtements et autres !!! UwU
+      </p>
+    </header>
+
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% for article in articles %}
+      <li>
+        <a href="" class="group block overflow-hidden">
+          <img
+            src="{{ article.image }}"
+            alt=""
+            style="height: 200px; width: 200px;object-fit: contain;margin: auto;"
+            class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-125 sm:h-[450px]"
+          />
+
+          <div class="relative bg-white pt-3">
+            <h3 style="color: #E3618E;text-align: center;" class="group-hover:underline group-hover:underline-offset-4">
+              {{article.nom}}
+            </h3>
+
+            <p class="mt-2">
+              <span class="tracking-wider text-gray-900"> {{article.prix}} € </span>
+            </p>
+          </div>
+        </a>
+      </li>
+    {%endfor%}
+    </ul>
+  </div>
+</section>
 {% endblock %}

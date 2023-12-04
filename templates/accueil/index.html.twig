@@ -1,22 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccueilController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .image-container {display: flex;justify-content: center;align-items: center;min-height: 100vh;overflow: hidden;}
+    .text-overlay {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;color: white;font-size: 90px;font-weight: bold;text-shadow: 10px 10px 15px rgba(255, 0, 127, 1);font-family: 'Franklin Gothic', sans-serif;-webkit-text-stroke: 1px pink;}
+    .mt-2 {margin-bottom: 25%;text-align: center;}
+    .text-gray-500 {font-family: 'Franklin Gothic', sans-serif;font-size: 22px; margin-bottom: 10%;}
+    .btn-voir-plus {font-family: 'Franklin Gothic', sans-serif;font-size: 19px; color: #E3618E; }
+    .btn-voir-plus:hover {text-decoration: underline;}
 </style>
-
-<div class="example-wrapper">
-    <h1>Bienvenue</h1>
-
-    Retrouvrez nos artciles personalisable ci-dessous :
-    <ul>
-        {% for article in articles %}
-            {{article.nom}}
-            <img src="{{article.image}}"></img>
-        {%endfor%}
-    </ul>
+<div class="image-container">
+ <img src="https://img.over-blog-kiwi.com/0/74/47/05/20200304/ob_436d41_tokyo-pop.jpg#width=1600&height=940" style="width: 100%; height: 100vh; margin-top: 2vh; object-fit: cover;margin-bottom: 5%;">
+<div class="text-overlay">Japon Pop Culture</div>
 </div>
+
+<section>
+  <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <header class="text-center">
+      <h2 style="color: #E3618E; font-family: 'Franklin Gothic', sans-serif;font-size: 30px;" class="font-bold sm:text-3xl">Bienvenue sur QuoiCouB'Achat !</h2>
+
+      <p class="text-gray-500">
+        Vous trouverez ici de nombreux articles sur le thème de la culture populaire japonaise ! ⛩️	
+      </p>
+    </header>
+
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% for article in articles[:16] %}
+      <li>
+        <a href="" class="group block overflow-hidden">
+          <img
+            src="{{ article.image }}"
+            alt=""
+            style="height: 200px; width: 200px;object-fit: contain;margin: auto;"
+            class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-125 sm:h-[450px]"
+          />
+
+          <div class="relative bg-white pt-3">
+            <h3 style="color: #E3618E;text-align: center;" class="group-hover:underline group-hover:underline-offset-4">
+              {{article.nom}}
+            </h3>
+
+            <p class="mt-2">
+              <span class="tracking-wider text-gray-900"> {{article.prix}} € </span>
+            </p>
+          </div>
+        </a>
+      </li>
+    {%endfor%}
+    </ul>
+  </div>
+  <div class="text-center mt-4">
+      <a href="/article" class="btn-voir-plus">... Voir toute la collection d'articles !! UwU</a>
+   </div>
+</section>
 {% endblock %}
