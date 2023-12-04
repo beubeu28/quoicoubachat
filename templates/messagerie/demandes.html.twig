@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie index{% endblock %}
+
+{% block body %}
+    <h1>Historique des messages</h1>  
+     {% if mesDemandes is not empty %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>identifiant du message</th>
+                    <th>Motif</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for messagerie in mesDemandes %}
+                    <tr>
+                        <td>{{ messagerie.id }}</td>
+                        <td>{{ messagerie.motif }}</td>
+                        <td>{{ messagerie.description }}</td>
+                        <td>{{ messagerie.date ? messagerie.date.format('Y-m-d H:i:s') : 'N/A' }}</td>
+                        <td><a href="{{ path('app_messagerie_edit', {'id': messagerie.id}) }}">edit</a></td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun message à afficher.</p>
+    {% endif %}
+
+    <a href="{{ path('app_messagerie_new') }}">Create new</a>
+{% endblock %}
