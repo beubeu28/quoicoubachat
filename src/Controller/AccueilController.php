@@ -16,4 +16,13 @@ class AccueilController extends AbstractController
             'articles' => $articleRepository->findAll(),
         ]);
     }
+
+    #[Route('/', name: 'Rechercher', methods: ['GET'])]
+    public function Rechercher(Request $request): Response
+    {
+        $searchQuery = $request->query->get('query');
+        return $this->render('article/index.html.twig', [
+            'searchQuery' => $searchQuery
+        ]);
+    }
 }
