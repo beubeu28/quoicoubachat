@@ -205,6 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $messagery->setUtilisateur(null);
             }
         }
+    }
 
     public function getTelephone(): ?string
     {
