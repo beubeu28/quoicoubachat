@@ -52,36 +52,42 @@
       .mt-2 {margin-bottom: 25%;text-align: center;}
       .text-gray-500 {font-family: 'Franklin Gothic', sans-serif;font-size: 22px; margin-bottom: 10%;}
   </style>
-  <form action="{{ path('trier') }}" method="GET">
-    <select name="Type">
-      <option value="0" >Type de l'article</option>
-      <option value="Figurine">Figurine</option>
-      <option value="T Shirt">T-Shirt</option>
-      <option value="Casquette">Casquette</option>
-      <option value="Jeu de société">Jeu de société</option>
-      <option value="Serre tête">Serre tête</option>
-    </select>
+   <section>
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <header class="text-center">
+        <form action="{{ path('trier') }}" method="GET">
+          <select name="Type" class=" border border-grey-200 rounded overflow-hidden w-650" >
+            <option value="0" >Type de l'article</option>
+            <option value="Figurine">Figurine</option>
+            <option value="T Shirt">T-Shirt</option>
+            <option value="Casquette">Casquette</option>
+            <option value="Jeu de société">Jeu de société</option>
+            <option value="Serre tête">Serre tête</option>
+          </select>
 
-    <select name="Univers">
-      <option value="0" >Univers</option>
-      <option value="One Piece">One Piece</option>
-      <option value="Naruto">Naruto</option>
-      <option value="Dragon Ball Z">Dragon Ball Z</option>
-      <option value="Power Rangers">Power rangers</option>
-      <option value="Pokemon">Pokemon</option>
-    </select>
+          <select name="Univers" class=" border border-grey-200 rounded overflow-hidden w-30">
+            <option value="0" >Univers</option>
+            <option value="One Piece">One Piece</option>
+            <option value="Naruto">Naruto</option>
+            <option value="Dragon Ball Z">Dragon Ball Z</option>
+            <option value="Power Rangers">Power rangers</option>
+            <option value="Pokemon">Pokemon</option>
+          </select>
 
-    <select name="Prix">
-      <option value="0" >Prix</option>
-      <option value="ASC">Croissant</option>
-      <option value="DESC">Décroissant</option>
-    </select>
+          <select name="Prix" class=" border border-grey-200 rounded overflow-hidden w-30">
+            <option value="0" >Prix</option>
+            <option value="ASC">Croissant</option>
+            <option value="DESC">Décroissant</option>
+          </select>
 
-    <input name="PMin" placeholder="Prix Minimum">
-    <input name="PMax" placeholder="Prix Maximum">
+          <input name="PMin" placeholder="Prix Minimum" class=" border border-grey-200 rounded overflow-hidden w-30">
+          <input name="PMax" placeholder="Prix Maximum" class=" border border-grey-200 rounded overflow-hidden w-30">
 
-    <input type="submit" value="Valider">
-  </form>
+          <input type="submit" value="Valider" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+        </form>
+      </header>
+    </div>
+  </section>
 
   <section>
     <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
