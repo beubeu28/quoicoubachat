@@ -207,6 +207,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
+
     public function getTelephone(): ?string
     {
         return $this->telephone;
