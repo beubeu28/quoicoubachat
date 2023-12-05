@@ -8,3 +8,10 @@ article_detail:
     methods: ['GET']
     requirements:
         articleId: '\d+'  # Cette contrainte assure que articleId est un nombre
+
+app_article_ajout:
+    path: '/ajout/{id}'
+    controller: 'App\Controller\ArticleController::ajout'
+    methods: ['GET']
+    requirements:
+        articleId: '\d+'  # Cette contrainte assure que articleId est un nombre

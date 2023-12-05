@@ -21,6 +21,15 @@ class DetailCommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, DetailCommande::class);
     }
 
+    public function findCurrentDetailCommandeByArticle(int $id): ?DetailCommande
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.articleid = :id') // Assure-toi que la propriété est bien "articleid" et non "articleid_id" s'il s'agit d'une clé étrangère
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return DetailCommande[] Returns an array of DetailCommande objects
 //     */

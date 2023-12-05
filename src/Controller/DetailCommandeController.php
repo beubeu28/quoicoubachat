@@ -25,17 +25,7 @@ class DetailCommandeController extends AbstractController
     #[Route('/new', name: 'app_detail_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-
-        $detailCommande = new DetailCommande();
-        $article = $this->getArticle();
-        $prix = $article->getPrix();
-        $detailCommande->setArticleId($id);
-        $detailCommande->setQauntite(1);
-        $detailCommande->setPrixunitaire($prix);
-        $prixTotal = $prix*$detailCommande->getQuantite();
-        $detailCommande->setPrixTotal($prixTotal);
-        $commande = $this->getCommandeId();
-
+        $detailCommande = new DetailCommande;
         $form = $this->createForm(DetailCommandeType::class, $detailCommande);
         $form->handleRequest($request);
 

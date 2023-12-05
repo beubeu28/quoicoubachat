@@ -21,30 +21,14 @@ class CommandeController extends AbstractController
         $user = $this->getUser();
         $id = $user->getId();
         
-        var_dump($id);   
         return $this->render('commande/index.html.twig', [
-            'commandes' => $commandeRepository->findBy(['utilisateurId' => $id]),
+            'commandes' => $commandeRepository->findUser($id),
         ]);
     }
 
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
-        $id = $user->getId();
-        
-        $commande = new Commande();
-        $commande->setUtilisateurId($id);
-        $commande->setStatut('En cours');
-
-        $detail = new DetailCommande();
-        $montantTotal = 0;
-
-        foreach($detail as $details){
-            $montantTotal +=$details->getPrixToatal();
-        }
-        $commande->setMontantTotal($montantTotal);
-        
         $form = $this->createForm(CommandeType::class, $commande);
         $form->handleRequest($request);
 
@@ -52,7 +36,7 @@ class CommandeController extends AbstractController
             $entityManager->persist($commande);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_detail_commande_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('commande/new.html.twig', [

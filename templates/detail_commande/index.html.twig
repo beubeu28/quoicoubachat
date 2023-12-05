@@ -5,35 +5,46 @@
 {% block body %}
     <h1>DetailCommande index</h1>
 
-    <table class="table">
+     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Quantite</th>
                 <th>PrixUnitaire</th>
                 <th>PrixTotal</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for detail_commande in detail_commandes %}
+        {% if detail_commandes|length > 0 %}
+            {% set commande = detail_commandes[0].commandeid %}
             <tr>
-                <td>{{ detail_commande.id }}</td>
-                <td>{{ detail_commande.quantite }}</td>
-                <td>{{ detail_commande.prixUnitaire }}</td>
-                <td>{{ detail_commande.prixTotal }}</td>
+                <td>{{ detail_commandes[0].quantite }}</td>
+                <td>{{ detail_commandes[0].prixUnitaire }}</td>
+                <td>{{ detail_commandes[0].prixTotal }}</td>
+            </tr>
+            {% for detail_commande in detail_commandes[1:] %}
+                <tr>
+                    <td>{{ detail_commande.quantite }}</td>
+                    <td>{{ detail_commande.prixUnitaire }}</td>
+                    <td>{{ detail_commande.prixTotal }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3">Commande ID: {{ commande.id }}</td>
+                <td>Date: {{ commande.date ? commande.date|date('Y-m-d') : '' }}</td>
+                <td>Montant Total: {{ commande.montantTotal }}</td>
+                <td>Statut: {{ commande.statut }}</td>
                 <td>
-                    <a href="{{ path('app_detail_commande_show', {'id': detail_commande.id}) }}">show</a>
-                    <a href="{{ path('app_detail_commande_edit', {'id': detail_commande.id}) }}">edit</a>
+                    {# Ajoute ici les liens pour les actions si nécessaire #}
+                    <a href="{{ path('app_detail_commande_show', {'id': detail_commandes[0].id}) }}">show</a>
+                    <a href="{{ path('app_detail_commande_edit', {'id': detail_commandes[0].id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_detail_commande_new') }}">Create new</a>
 {% endblock %}

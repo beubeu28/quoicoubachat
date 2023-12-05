@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\DetailCommande;
+use App\Entity\Commande;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommandeRepository;
+use App\Repository\DetailCommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +35,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($article);
             $entityManager->flush();
 
@@ -42,13 +48,58 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/ajout', name: 'app_article_ajout', methods: ['GET', 'POST'])]
-    public function ajout(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        return $this->redirectToRoute('app_commande_new', [], Response::HTTP_SEE_OTHER);
+    private $entityManager;
 
+    #[Route('/ajout/{id}', name: 'app_article_ajout', methods: ['GET'])]
+public function ajout(
+    int $id,
+    Request $request,
+    EntityManagerInterface $entityManager,
+    ArticleRepository $articleRepository,
+    CommandeRepository $commandeRepository,
+    DetailCommandeRepository $detailCommandeRepository
+): Response {
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
     }
 
+    $article = $articleRepository->find($id);
+    $commande = $commandeRepository->findCurrentCommandeByUser($user);
+
+    if (!$commande) {
+        $commande = new Commande();
+        $commande->setDate(new \DateTime());
+        $commande->setStatut('En cours');
+        $commande->setUtilisateurId($user);
+        $entityManager->persist($commande);
+    }
+
+    $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
+
+    if (!$detailCommande) {
+        $detailCommande = new DetailCommande();
+        $detailCommande->setArticleId($article);
+        $detailCommande->setQuantite(1);
+        $detailCommande->setPrixUnitaire($article->getPrix());
+        $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
+        $commande->addDetailCommande($detailCommande);
+    } else {
+        $detailCommande->setQuantite($detailCommande->getQuantite() + 1);
+        $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
+    }
+
+    $commande->setMontantTotal(0); // Remise à zéro pour recalculer
+    foreach ($commande->getDetailCommandes() as $detail) {
+        $commande->setMontantTotal($commande->getMontantTotal() + $detail->getPrixTotal());
+    }
+
+    $entityManager->persist($detailCommande);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('app_article_show');
+}
 
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
