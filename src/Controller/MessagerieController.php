@@ -62,20 +62,12 @@ class MessagerieController extends AbstractController
     {
         $user = $this->getUser();
         $role = $user->getRoles();
-        var_dump($role);
-        // if($role = "ROLE_ADMIN"){
-        //     return $this->render('messagerie/index.html.twig', [
-        //         'mesDemandes' => $messagerieRepository->findAll(),]);
-        // }
-        // else{
-            $mail = $user->getEmail();
-            $mesDemandes = $messagerieRepository->mesDemandes($mail);
+        $mail = $user->getEmail();
+        $mesDemandes = $messagerieRepository->mesDemandes($mail);
 
-            return $this->render('messagerie/demandes.html.twig', [
-                'mesDemandes' => $mesDemandes,
-            ]);
-        //}
-       
+        return $this->render('messagerie/demandes.html.twig', [
+            'mesDemandes' => $mesDemandes,
+        ]);
     }
 
 
@@ -113,6 +105,8 @@ class MessagerieController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_messagerie_index', [], Response::HTTP_SEE_OTHER);
+        // Redirection vers la page précédente (referer)
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 }
