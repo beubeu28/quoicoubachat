@@ -62,7 +62,6 @@ class MessagerieController extends AbstractController
     {
         $user = $this->getUser();
         $role = $user->getRoles();
-        var_dump($role);
         // if($role = "ROLE_ADMIN"){
         //     return $this->render('messagerie/index.html.twig', [
         //         'mesDemandes' => $messagerieRepository->findAll(),]);

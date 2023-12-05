@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Commande;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +15,14 @@ class CommandeType extends AbstractType
     {
         $builder
             ->add('date')
-            ->add('montantTotale')
-            ->add('statut')
+            ->add('montantTotal')
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'En cours' => 'en_cours',
+                    'Terminée' => 'terminee',
+                    'Annulée' => 'annulee'
+                    ]
+                ,])
             ->add('utilisateurid')
         ;
     }

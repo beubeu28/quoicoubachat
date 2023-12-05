@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Commande;
 use App\Form\CommandeType;
+use App\Entity\DetailCommande;
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,15 +18,33 @@ class CommandeController extends AbstractController
     #[Route('/', name: 'app_commande_index', methods: ['GET'])]
     public function index(CommandeRepository $commandeRepository): Response
     {
+        $user = $this->getUser();
+        $id = $user->getId();
+        
+        var_dump($id);   
         return $this->render('commande/index.html.twig', [
-            'commandes' => $commandeRepository->findAll(),
+            'commandes' => $commandeRepository->findBy(['utilisateurId' => $id]),
         ]);
     }
 
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $id = $user->getId();
+        
         $commande = new Commande();
+        $commande->setUtilisateurId($id);
+        $commande->setStatut('En cours');
+
+        $detail = new DetailCommande();
+        $montantTotal = 0;
+
+        foreach($detail as $details){
+            $montantTotal +=$details->getPrixToatal();
+        }
+        $commande->setMontantTotal($montantTotal);
+        
         $form = $this->createForm(CommandeType::class, $commande);
         $form->handleRequest($request);
 
@@ -40,6 +59,7 @@ class CommandeController extends AbstractController
             'commande' => $commande,
             'form' => $form,
         ]);
+       // return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_commande_show', methods: ['GET'])]
