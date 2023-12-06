@@ -60,7 +60,6 @@ public function ajout(
     DetailCommandeRepository $detailCommandeRepository
 ): Response {
     $user = $this->getUser();
-
     if (!$user) {
         return $this->redirectToRoute('app_login');
     }
@@ -76,8 +75,7 @@ public function ajout(
         $entityManager->persist($commande);
     }
 
-    $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
-
+        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
     if (!$detailCommande) {
         $detailCommande = new DetailCommande();
         $detailCommande->setArticleId($article);
@@ -90,15 +88,24 @@ public function ajout(
         $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
     }
 
-    $commande->setMontantTotal(0); // Remise à zéro pour recalculer
+    $commande->setMontantTotal(0); // Reset to recalculate
     foreach ($commande->getDetailCommandes() as $detail) {
+        $detail->setPrixTotal($detail->getQuantite() * $detail->getPrixUnitaire());
         $commande->setMontantTotal($commande->getMontantTotal() + $detail->getPrixTotal());
     }
 
+    $article->setStock($article->getStock()-1);
+
     $entityManager->persist($detailCommande);
+    $entityManager->persist($article);
+
     $entityManager->flush();
 
-    return $this->redirectToRoute('app_article_show');
+    $commandeid = $commande->getId();
+    $mesCommandes = $detailCommandeRepository->mesCommandes($commandeid);
+    return $this->render('detail_commande\index.html.twig', [
+        'detail_commandes' => $mesCommandes,
+    ]);
 }
 
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
@@ -137,4 +144,27 @@ public function ajout(
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/view/{id}', name: 'app_article_view', methods: ['GET'])]
+    public function view(
+        int $id,
+        Request $request,
+        ArticleRepository $articleRepository,
+        EntityManagerInterface $entityManager,
+        CommandeRepository $commandeRepository,
+        DetailCommandeRepository $detailCommandeRepository): Response
+    {
+        $commande = $commandeRepository->findCurrentCommandeById($id);
+        if(!$commande){
+            return $this->render('detail_commande\index.html.twig', [
+                'detail_commandes' => [],
+            ]);
+        }
+        $commandeid = $commande->getId();
+        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByCommande($commandeid);
+        return $this->render('detail_commande\index.html.twig', [
+            'detail_commandes' => $detailCommande,
+        ]);
+    }
+
 }

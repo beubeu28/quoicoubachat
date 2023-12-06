@@ -23,16 +23,27 @@ class CommandeRepository extends ServiceEntityRepository
     }
 
     public function findCurrentCommandeByUser(User $user): ?Commande
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.utilisateurid = :user')
-            ->andWhere('c.statut = :statut')
-            ->setParameter('user', $user)
-            ->setParameter('statut', 'En cours')
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.utilisateurid = :user')
+        ->andWhere('c.statut = :statut')
+        ->setParameter('user', $user)
+        ->setParameter('statut', 'En cours')
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
+public function findCurrentCommandeById(int $id): ?Commande
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.utilisateurid = :id')
+        ->andWhere('c.statut = :statut')
+        ->setParameter('id', $id)
+        ->setParameter('statut', 'En cours')
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
     public function findUser(int $id): ?Commande
     {
         return $this->createQueryBuilder('c')

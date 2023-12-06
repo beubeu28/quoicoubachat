@@ -15,3 +15,13 @@ app_article_ajout:
     methods: ['GET']
     requirements:
         articleId: '\d+'  # Cette contrainte assure que articleId est un nombre
+
+        
+app_article_view:
+    path: '/view/{id}'
+    controller: 'App\Controller\ArticleController::view'
+    methods: ['GET']
+    requirements:
+        articleId: '\d+'  # Cette contrainte assure que articleId est un nombre
+
+    
