@@ -59,6 +59,7 @@ public function ajout(
     CommandeRepository $commandeRepository,
     DetailCommandeRepository $detailCommandeRepository
 ): Response {
+
     $user = $this->getUser();
     if (!$user) {
         return $this->redirectToRoute('app_login');
@@ -93,7 +94,7 @@ public function ajout(
         $detail->setPrixTotal($detail->getQuantite() * $detail->getPrixUnitaire());
         $commande->setMontantTotal($commande->getMontantTotal() + $detail->getPrixTotal());
     }
-
+    
     $article->setStock($article->getStock()-1);
 
     $entityManager->persist($detailCommande);

@@ -41,6 +41,10 @@ class DetailCommandeController extends AbstractController
     public function qplus(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
         $commande = $detailCommande->getCommandeid();
         $article = $detailCommande->getArticleid();
+        if($article->getStock()==0){
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
         $newQuantity = $detailCommande->getQuantite() + 1;
     
         $article->setStock($article->getStock() - 1);

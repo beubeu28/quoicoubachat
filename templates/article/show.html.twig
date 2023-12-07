@@ -20,10 +20,17 @@
         <p class="mb-6 text-xl text-pink-400 font-semibold">{{ article.stock }} articles restants ! </p>
         <p class="mb-6 text-xl text-pink-400 font-semibold">{{ article.prix }}  €</p>
         
+        {% if article.stock==0 %}
+          <form action="" method="get">
+          <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+            Article non disponible
+          </button>
+        {% else %}
         <form action="{{ path('app_article_ajout', {'id': article.id}) }}" method="get">
           <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
             Ajouter au panier
           </button>
+        {% endif %}
         </form>
       </div>
     </div>

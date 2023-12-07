@@ -40,18 +40,20 @@
                                             <input type="hidden" name="id" value="{{ detail_commande.id }}">
                                             <button type="submit" class="bg-pink-500 text-white px-3 py-1">-</button>
                                         </form>
-                                        ,
+                                            <span style="visibility: hidden;">,</span>
+                                        {% if detail_commande.articleid.stock!=0 %}
                                         <form action="{{ path('app_detail_commande_plus', {'id': detail_commande.id}) }}" method="post">
                                             <input type="hidden" name="id" value="{{ detail_commande.id }}">
                                             <button type="submit" class="bg-pink-500 text-white px-3 py-1">+</button>
                                         </form>
+                                        {% endif %}
                                     </td>
                                
                             {% endfor %}
                         {% else %}
                             <tr>
                                 <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
-                                    <div class="bg-white p-4 rounded-lg shadow-lg">
+                                    <div class="bg-pink-200 p-8 rounded-lg shadow-lg mb-8">
                                         <strong>Pas d'article dans le panier</strong>
                                     </div>
                                 </td>
@@ -60,6 +62,8 @@
                     </tbody>
                 </table>
                 </br>
+            {% if detail_commandes|length > 0 %}
+
             <div class=" bg-pink-200 p-8 rounded-lg shadow-lg mb-8">
             {# Affichage de la commande en dessous du cadre de détails #}
             {% if detail_commandes|length > 0 %}
@@ -75,5 +79,6 @@
                     </form>
             {% endif %}
         </div>
+        {% endif %}
     </section>
 {% endblock %}
