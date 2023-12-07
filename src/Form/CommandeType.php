@@ -19,8 +19,10 @@ class CommandeType extends AbstractType
             ->add('statut', ChoiceType::class, [
                 'choices' => [
                     'En cours' => 'en_cours',
+                    'En cours de livraison' => 'en cours de livraison',
+                    'Livré' => 'livré',
                     'Terminée' => 'terminee',
-                    'Annulée' => 'annulee'
+                    'Annulée' => 'annulée'
                     ]
                 ,])
             ->add('utilisateurid')
