@@ -36,24 +36,24 @@ class MessagerieController extends AbstractController
 
             $messagerie->setUserMail($userEmail);
         
-        $form = $this->createForm(MessagerieType::class, $messagerie);
-        $form->handleRequest($request);
+          $form = $this->createForm(MessagerieType::class, $messagerie);
+          $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($messagerie);
-            $entityManager->flush();
+          if ($form->isSubmitted() && $form->isValid()) {
+              $entityManager->persist($messagerie);
+              $entityManager->flush();
 
-            return $this->redirectToRoute('app_messagerie_mesDemandes');
-        }
+              return $this->redirectToRoute('app_messagerie_mesDemandes');
+          }
 
-        return $this->renderForm('messagerie/new.html.twig', [
-            'messagerie' => $messagerie,
-            'form' => $form,
-        ]); 
-    }else{
-        return $this->redirectToRoute('app_register');
+          return $this->renderForm('messagerie/new.html.twig', [
+              'messagerie' => $messagerie,
+              'form' => $form,
+          ]); 
+      }else{
+          return $this->redirectToRoute('app_register');
 
-    }
+      }
 
     }
 
@@ -68,7 +68,6 @@ class MessagerieController extends AbstractController
         return $this->render('messagerie/demandes.html.twig', [
             'mesDemandes' => $mesDemandes,
         ]);
-       
     }
 
 
@@ -106,6 +105,8 @@ class MessagerieController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_messagerie_index', [], Response::HTTP_SEE_OTHER);
+        // Redirection vers la page précédente (referer)
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 }
