@@ -31,6 +31,7 @@ class DetailCommandeController extends AbstractController
             $entityManager->remove($detailCommande);
         }
         $commande->recalculateMontantTotal();
+        $commande->setDate(new \DateTime);
         $entityManager->flush();
     
         $referer = $request->headers->get('referer');
@@ -50,6 +51,7 @@ class DetailCommandeController extends AbstractController
         $article->setStock($article->getStock() - 1);
         $detailCommande->setQuantite($newQuantity);
         $detailCommande->setPrixTotal($newQuantity * $detailCommande->getPrixUnitaire());
+        $commande->setDate(new \DateTime);
         $commande->recalculateMontantTotal();
         $entityManager->flush();
     

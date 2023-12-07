@@ -106,7 +106,8 @@ public function ajout(
         $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
     }
 
-    $commande->setMontantTotal(0); // Reset to recalculate
+    $commande->setMontantTotal(0);
+    $commande->setDate(new \DateTime);
     foreach ($commande->getDetailCommandes() as $detail) {
         $detail->setPrixTotal($detail->getQuantite() * $detail->getPrixUnitaire());
         $commande->setMontantTotal($commande->getMontantTotal() + $detail->getPrixTotal());
