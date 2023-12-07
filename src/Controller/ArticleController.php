@@ -102,10 +102,8 @@ public function ajout(
     $entityManager->flush();
 
     $commandeid = $commande->getId();
-    $mesCommandes = $detailCommandeRepository->mesCommandes($commandeid);
-    return $this->render('detail_commande\index.html.twig', [
-        'detail_commandes' => $mesCommandes,
-    ]);
+    $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByCommande($commandeid);
+    return $this->redirectToRoute('app_article_panier', ['id'=>$user->getId()], Response::HTTP_SEE_OTHER);
 }
 
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
@@ -145,8 +143,8 @@ public function ajout(
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/view/{id}', name: 'app_article_view', methods: ['GET'])]
-    public function view(
+    #[Route('/panier/{id}', name: 'app_article_panier', methods: ['GET'])]
+    public function panier(
         int $id,
         Request $request,
         ArticleRepository $articleRepository,

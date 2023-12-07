@@ -17,44 +17,38 @@ class DetailCommandeController extends AbstractController
 {
     
     #[Route('/moins/{id}', name: 'app_detail_commande_moins', methods: ['POST'])]
-    public function qmoins(Request $request, EntityManagerInterface $entityManager, $id): Response {
-        $detailCommande = $entityManager->getRepository(DetailCommande::class)->find($id);
+    public function qmoins(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
         $commande = $detailCommande->getCommandeid();
-    
         $article = $detailCommande->getArticleid();
         $newQuantity = $detailCommande->getQuantite() - 1;
     
         $article->setStock($article->getStock() + 1);
         $detailCommande->setQuantite($newQuantity);
         $detailCommande->setPrixTotal($newQuantity * $detailCommande->getPrixUnitaire());
-        $commande->setMontantTotal($commande->getMontantTotal() - $article->getPrix());
-           
+    
         if ($newQuantity == 0) {
+            $commande->removeDetailCommande($detailCommande); // Assurez-vous que la méthode removeDetailCommande est définie dans votre entité Commande
             $entityManager->remove($detailCommande);
         }
-
-        $entityManager->persist($commande);
+        $commande->recalculateMontantTotal();
         $entityManager->flush();
     
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
-
+    
     #[Route('/plus{id}', name: 'app_detail_commande_plus', methods: ['POST'])]
-    public function qplus(Request $request,EntityManagerInterface $entityManager,#[ParamConverter('detailCommande', class: DetailCommande::class)]
-    DetailCommande $detailCommande): Response {
-        $detailId = $request->request->get('id');
+    public function qplus(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
         $commande = $detailCommande->getCommandeid();
-
         $article = $detailCommande->getArticleid();
         $newQuantity = $detailCommande->getQuantite() + 1;
+    
         $article->setStock($article->getStock() - 1);
-
         $detailCommande->setQuantite($newQuantity);
         $detailCommande->setPrixTotal($newQuantity * $detailCommande->getPrixUnitaire());
-        $commande->setMontantTotal($commande->getMontantTotal() + $article->getPrix());
+        $commande->recalculateMontantTotal();
         $entityManager->flush();
-        
+    
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }

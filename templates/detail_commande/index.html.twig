@@ -5,67 +5,74 @@
 {% block body %}
     <section class="flex flex-col items-center w-full min-h-screen min-h-full bg-pink-200 text-gray-700">
         <div class="container my-24 mx-auto md:px-6">
-            <h1 class="text-2xl font-bold mb-8">DetailCommande index</h1>
+            <h1 class="text-2xl font-bold mb-8">Mon panier :</h1>
 
-            <table class="min-w-full border border-gray-300">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b bg-gray-200">Quantite</th>
-                        <th class="py-2 px-4 border-b bg-gray-200">PrixUnitaire</th>
-                        <th class="py-2 px-4 border-b bg-gray-200">PrixTotal</th>
-                        <th class="py-2 px-4 border-b bg-gray-200">Article</th>
-                        <th class="py-2 px-4 border-b bg-gray-200">Image</th>
-                        <th class="py-2 px-4 border-b bg-gray-200">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if detail_commandes|length > 0 %}
-                        {% set commande = detail_commandes[0].commandeid %}
-                        {% for detail_commande in detail_commandes %}
+            <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+                <table class=" border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b bg-gray-200">Quantite</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">PrixUnitaire</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">PrixTotal</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Article</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Image</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if detail_commandes|length > 0 %}
+                            {% set commande = detail_commandes[0].commandeid %}
+                            {% for detail_commande in detail_commandes %}
+                                <tr>
+                                    <td class="py-2 px-4 border-b">{{ detail_commande.quantite }}</td>
+                                    <td class="py-2 px-4 border-b">{{ detail_commande.prixUnitaire }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ detail_commande.prixTotal }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ detail_commande.articleid.nom }}</td>
+                                    <td class="py-2 px-4 border-b">
+                                        <img
+                                            src="{{ detail_commande.articleid.image }}"
+                                            alt=""
+                                            style="height: 100px; width: 100px; object-fit: contain; margin: auto;"
+                                        />
+                                    </td>
+                                    <td class="py-2 px-4 border-b">
+                                        <form action="{{ path('app_detail_commande_moins', {'id': detail_commande.id}) }}" method="post">
+                                            <input type="hidden" name="id" value="{{ detail_commande.id }}">
+                                            <button type="submit" class="bg-pink-500 text-white px-3 py-1">-</button>
+                                        </form>
+                                        ,
+                                        <form action="{{ path('app_detail_commande_plus', {'id': detail_commande.id}) }}" method="post">
+                                            <input type="hidden" name="id" value="{{ detail_commande.id }}">
+                                            <button type="submit" class="bg-pink-500 text-white px-3 py-1">+</button>
+                                        </form>
+                                    </td>
+                               
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td class="py-2 px-4 border-b">{{ detail_commande.quantite }}</td>
-                                <td class="py-2 px-4 border-b">{{ detail_commande.prixUnitaire }}</td>
-                                <td class="py-2 px-4 border-b">{{ detail_commande.prixTotal }}</td>
-                                <td class="py-2 px-4 border-b">{{ detail_commande.articleid.nom }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    <img
-                                        src="{{ detail_commande.articleid.image }}"
-                                        alt=""
-                                        style="height: 100px; width: 100px; object-fit: contain; margin: auto;"
-                                    />
-                                </td>
-                                <td class="py-2 px-4 border-b">
-                                    <form action="{{ path('app_detail_commande_moins', {'id': detail_commande.id}) }}" method="post">
-                                        <input type="hidden" name="id" value="{{ detail_commande.id }}">
-                                        <button type="submit" class="bg-pink-500 text-white px-3 py-1">-</button>
-                                    </form>
-                                    ,
-                                    <form action="{{ path('app_detail_commande_plus',{'id': detail_commande.id}) }}" method="post">
-                                        <input type="hidden" name="id" value="{{ detail_commande.id }}">
-                                        <button type="submit" class="bg-pink-500 text-white px-3 py-1">+</button>
-                                    </form>
+                                <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
+                                    <div class="bg-white p-4 rounded-lg shadow-lg">
+                                        <strong>Pas d'article dans le panier</strong>
+                                    </div>
                                 </td>
                             </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
-                                <div class="bg-pink-500 text-white p-4 rounded-lg shadow-lg">
-                                    <strong>Pas d'article dans le panier</strong>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </br>
+            <div class=" bg-pink-200 p-8 rounded-lg shadow-lg mb-8">
             {# Affichage de la commande en dessous du cadre de détails #}
             {% if detail_commandes|length > 0 %}
-                <div class="bg-white p-4 rounded-lg shadow-lg text-pink-500">
+               
                     <strong>Commande ID:</strong> {{ commande.id }}<br>
                     <strong>Date:</strong> {{ commande.date ? commande.date|date('Y-m-d') : '' }}<br>
                     <strong>Montant Total:</strong> {{ commande.montantTotal }} € <br>
                     <strong>Statut:</strong> {{ commande.statut }}
-                </div>
+
+                    {# Bouton Valider Panier #}
+                    <form action="" method="post" class="mt-4">
+                        <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Valider Panier</button>
+                    </form>
             {% endif %}
         </div>
     </section>

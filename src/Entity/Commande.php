@@ -98,7 +98,6 @@ class Commande
     public function removeDetailCommande(DetailCommande $detailCommande): static
     {
         if ($this->detailCommandes->removeElement($detailCommande)) {
-            // set the owning side to null (unless already changed)
             if ($detailCommande->getCommandeid() === $this) {
                 $detailCommande->setCommandeid(null);
             }
@@ -118,5 +117,17 @@ class Commande
         $this->utilisateurid = $utilisateurid;
 
         return $this;
+    }
+
+    public function recalculateMontantTotal(): void
+    {
+        $montantTotal = 0;
+
+        /** @var DetailCommande $detailCommande */
+        foreach ($this->detailCommandes as $detailCommande) {
+            $montantTotal += $detailCommande->getPrixTotal();
+        }
+
+        $this->setMontantTotal($montantTotal);
     }
 }
