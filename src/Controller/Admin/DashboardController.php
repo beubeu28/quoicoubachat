@@ -23,11 +23,9 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         try {
-            // Your existing code
             return $this->render('admin/dashboard.html.twig');
         } catch (AccessDeniedException $e) {
-            // Redirect the user to a different route
-            return $this->redirectToRoute('your_custom_route');
+            return $this->redirectToRoute('/');
         }
     }
 
