@@ -21,16 +21,34 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function filtre($recherche): array
+    public function filtre($recherche, $Type, $Univers, $PMin, $PMax, $Prix): array
     {
         $queryBuilder = $this->createQueryBuilder('c');
 
+        if ($PMin){
+            $queryBuilder->andWhere('c.prix >= :min')
+                ->setParameter('min', $PMin);
+        }
+        if ($PMax){
+            $queryBuilder->andWhere('c.prix <= :max')
+                ->setParameter('max', $PMax);
+        }
+        if ($Prix !== '0'){
+            $queryBuilder->orderBy('c.prix', $Prix);
+        }
+        if ($Type !== '0') {
+            $queryBuilder->andWhere('c.description LIKE :type')
+                ->setParameter('type', '%' . $Type . '%');
+        }
+        if ($Univers !== '0') {
+            $queryBuilder->andWhere('c.description LIKE :univers')
+                ->setParameter('univers', '%' . $Univers . '%');
+        }
         if ($recherche) {
             $queryBuilder->andWhere('c.description LIKE :recherche')
                 ->setParameter('recherche', '%' . $recherche . '%');
         }
         $query = $queryBuilder->getQuery();
-
         return $query->getResult();
     }
 

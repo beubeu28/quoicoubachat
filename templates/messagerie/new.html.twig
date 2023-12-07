@@ -3,10 +3,5 @@
 {% block title %}New Messagerie{% endblock %}
 
 {% block body %}
-    <h1>Nouveau message : </h1>
-
     {{ include('messagerie/_form.html.twig') }}
-
-    <a href="{{ path('app_accueil') }}">Revenir à l'accueil</a>
-    <a href="{{ path('app_messagerie_mesDemandes') }}">Voir vos messages</a>
 {% endblock %}

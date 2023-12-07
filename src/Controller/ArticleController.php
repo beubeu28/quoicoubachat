@@ -20,10 +20,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(Request $request, ArticleRepository $articleRepository): Response
     {
         return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            'articles' =>$articleRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/trier', name: 'trier', methods: ['GET'])]
+    public function tri(Request $request, ArticleRepository $articleRepository): Response
+    {
+        $Rechercher = $request->query->get('Rechercher');
+        $Type = $request->query->get('Type');
+        $Univers = $request->query->get('Univers');
+        $PMin = $request->query->get('PMin');
+        $PMax = $request->query->get('PMax');
+        $Prix = $request->query->get('Prix');
+
+        $articles = $articleRepository->filtre($Rechercher, $Type, $Univers, $PMin, $PMax, $Prix);
+
+        return $this->render('article/index.html.twig', [
+            'articles' =>$articles,
         ]);
     }
 
