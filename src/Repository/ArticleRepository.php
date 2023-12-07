@@ -51,6 +51,8 @@ class ArticleRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
+
+    
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */

@@ -29,9 +29,9 @@
                 <td>{{ article.stock }}</td>
                 <td><img src="{{ article.image }}" style="width: 200px; height: 200px; object-fit: contain;"></td>
                 <td>
-                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a> 
+                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
-                    <a href="{{ path('app_article_add', {'id':article.id}) }}">ajouter</a>
+                    <a href="{{ path('app_article_ajout', {'id':article.id}) }}">ajouter</a>
                 </td>
             </tr>
         {% else %}
@@ -108,10 +108,10 @@
       <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {% for article in articles %}
         <li>
-          <a href="" class="group block ">
+          <a href="{{ path('app_article_show', {'id': article.id}) }}" class="group block ">
             <img
               src="{{ article.image }}"
-              alt=""
+              href=""
               style="height: 200px; width: 200px;object-fit: contain;margin: auto;"
               class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-125 sm:h-[450px]"
             />

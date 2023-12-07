@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\DetailCommande;
+use App\Entity\Commande;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommandeRepository;
+use App\Repository\DetailCommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +52,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($article);
             $entityManager->flush();
 
@@ -59,26 +65,65 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/add', name: 'app_article_add', methods: ['GET', 'POST'])]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+    private $entityManager;
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($article);
-            $entityManager->flush();
+    #[Route('/ajout/{id}', name: 'app_article_ajout', methods: ['GET'])]
+public function ajout(
+    int $id,
+    Request $request,
+    EntityManagerInterface $entityManager,
+    ArticleRepository $articleRepository,
+    CommandeRepository $commandeRepository,
+    DetailCommandeRepository $detailCommandeRepository
+): Response {
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('article/new.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
     }
 
+    $article = $articleRepository->find($id);
+    $commande = $commandeRepository->findCurrentCommandeByUser($user);
+
+    if (!$commande) {
+        $commande = new Commande();
+        $commande->setDate(new \DateTime());
+        $commande->setStatut('En cours');
+        $commande->setUtilisateurId($user);
+        $entityManager->persist($commande);
+    }
+
+        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
+    if (!$detailCommande) {
+        $detailCommande = new DetailCommande();
+        $detailCommande->setArticleId($article);
+        $detailCommande->setQuantite(1);
+        $detailCommande->setPrixUnitaire($article->getPrix());
+        $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
+        $commande->addDetailCommande($detailCommande);
+    } else {
+        $detailCommande->setQuantite($detailCommande->getQuantite() + 1);
+        $detailCommande->setPrixTotal($detailCommande->getQuantite() * $detailCommande->getPrixUnitaire());
+    }
+
+    $commande->setMontantTotal(0);
+    $commande->setDate(new \DateTime);
+    foreach ($commande->getDetailCommandes() as $detail) {
+        $detail->setPrixTotal($detail->getQuantite() * $detail->getPrixUnitaire());
+        $commande->setMontantTotal($commande->getMontantTotal() + $detail->getPrixTotal());
+    }
+    
+    $article->setStock($article->getStock()-1);
+
+    $entityManager->persist($detailCommande);
+    $entityManager->persist($article);
+
+    $entityManager->flush();
+
+    $commandeid = $commande->getId();
+    $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByCommande($commandeid);
+    return $this->redirectToRoute('app_article_panier', ['id'=>$user->getId()], Response::HTTP_SEE_OTHER);
+}
 
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
@@ -116,4 +161,27 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/panier/{id}', name: 'app_article_panier', methods: ['GET'])]
+    public function panier(
+        int $id,
+        Request $request,
+        ArticleRepository $articleRepository,
+        EntityManagerInterface $entityManager,
+        CommandeRepository $commandeRepository,
+        DetailCommandeRepository $detailCommandeRepository): Response
+    {
+        $commande = $commandeRepository->findCurrentCommandeById($id);
+        if(!$commande){
+            return $this->render('detail_commande\index.html.twig', [
+                'detail_commandes' => [],
+            ]);
+        }
+        $commandeid = $commande->getId();
+        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByCommande($commandeid);
+        return $this->render('detail_commande\index.html.twig', [
+            'detail_commandes' => $detailCommande,
+        ]);
+    }
+
 }

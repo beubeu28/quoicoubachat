@@ -16,11 +16,11 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
-    private ?float $montantTotale = null;
+    private ?float $montantTotal = null;
 
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
@@ -33,7 +33,7 @@ class Commande
 
     public function __construct()
     {
-        $this->detailCommandes = new ArrayCollection();
+            $this->detailCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,14 +53,14 @@ class Commande
         return $this;
     }
 
-    public function getMontantTotale(): ?float
+    public function getMontantTotal(): ?float
     {
-        return $this->montantTotale;
+        return $this->montantTotal;
     }
 
-    public function setMontantTotale(float $montantTotale): static
+    public function setMontantTotal(float $montantTotal): static
     {
-        $this->montantTotale = $montantTotale;
+        $this->montantTotal = $montantTotal;
 
         return $this;
     }
@@ -98,7 +98,6 @@ class Commande
     public function removeDetailCommande(DetailCommande $detailCommande): static
     {
         if ($this->detailCommandes->removeElement($detailCommande)) {
-            // set the owning side to null (unless already changed)
             if ($detailCommande->getCommandeid() === $this) {
                 $detailCommande->setCommandeid(null);
             }
@@ -109,6 +108,7 @@ class Commande
 
     public function getUtilisateurid(): ?User
     {
+
         return $this->utilisateurid;
     }
 
@@ -117,5 +117,17 @@ class Commande
         $this->utilisateurid = $utilisateurid;
 
         return $this;
+    }
+
+    public function recalculateMontantTotal(): void
+    {
+        $montantTotal = 0;
+
+        /** @var DetailCommande $detailCommande */
+        foreach ($this->detailCommandes as $detailCommande) {
+            $montantTotal += $detailCommande->getPrixTotal();
+        }
+
+        $this->setMontantTotal($montantTotal);
     }
 }
