@@ -13,7 +13,7 @@ class MessagerieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('motif', ClassType::class, [ 'choices' => [
+            ->add('motif', ChoiceType::class, [ 'choices' => [
                 'Sélectionnez un motif' => '',
                 'Article manquant' => 'Article manquant',
                 'Divers' => 'Divers',
