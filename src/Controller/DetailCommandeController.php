@@ -11,9 +11,54 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/detail/commande')]
 class DetailCommandeController extends AbstractController
 {
+    
+    #[Route('/moins/{id}', name: 'app_detail_commande_moins', methods: ['POST'])]
+    public function qmoins(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
+        $commande = $detailCommande->getCommandeid();
+        $article = $detailCommande->getArticleid();
+        $newQuantity = $detailCommande->getQuantite() - 1;
+    
+        $article->setStock($article->getStock() + 1);
+        $detailCommande->setQuantite($newQuantity);
+        $detailCommande->setPrixTotal($newQuantity * $detailCommande->getPrixUnitaire());
+    
+        if ($newQuantity == 0) {
+            $commande->removeDetailCommande($detailCommande); // Assurez-vous que la méthode removeDetailCommande est définie dans votre entité Commande
+            $entityManager->remove($detailCommande);
+        }
+        $commande->recalculateMontantTotal();
+        $commande->setDate(new \DateTime);
+        $entityManager->flush();
+    
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+    
+    #[Route('/plus{id}', name: 'app_detail_commande_plus', methods: ['POST'])]
+    public function qplus(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
+        $commande = $detailCommande->getCommandeid();
+        $article = $detailCommande->getArticleid();
+        if($article->getStock()==0){
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
+        $newQuantity = $detailCommande->getQuantite() + 1;
+    
+        $article->setStock($article->getStock() - 1);
+        $detailCommande->setQuantite($newQuantity);
+        $detailCommande->setPrixTotal($newQuantity * $detailCommande->getPrixUnitaire());
+        $commande->setDate(new \DateTime);
+        $commande->recalculateMontantTotal();
+        $entityManager->flush();
+    
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
     #[Route('/', name: 'app_detail_commande_index', methods: ['GET'])]
     public function index(DetailCommandeRepository $detailCommandeRepository): Response
     {
@@ -25,7 +70,7 @@ class DetailCommandeController extends AbstractController
     #[Route('/new', name: 'app_detail_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $detailCommande = new DetailCommande();
+        $detailCommande = new DetailCommande;
         $form = $this->createForm(DetailCommandeType::class, $detailCommande);
         $form->handleRequest($request);
 
@@ -41,6 +86,7 @@ class DetailCommandeController extends AbstractController
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_detail_commande_show', methods: ['GET'])]
     public function show(DetailCommande $detailCommande): Response
@@ -78,4 +124,6 @@ class DetailCommandeController extends AbstractController
 
         return $this->redirectToRoute('app_detail_commande_index', [], Response::HTTP_SEE_OTHER);
     }
+
+   
 }

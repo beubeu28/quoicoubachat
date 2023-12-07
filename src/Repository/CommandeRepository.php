@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Commande;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +21,39 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
+
+    public function findCurrentCommandeByUser(User $user): ?Commande
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.utilisateurid = :user')
+        ->andWhere('c.statut = :statut')
+        ->setParameter('user', $user)
+        ->setParameter('statut', 'En cours')
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
+public function findCurrentCommandeById(int $id): ?Commande
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.utilisateurid = :id')
+        ->andWhere('c.statut = :statut')
+        ->setParameter('id', $id)
+        ->setParameter('statut', 'En cours')
+        ->getQuery()
+        ->getOneOrNullResult()
+    ;
+}
+    public function findUser(int $id): ?Commande
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.utilisateurid = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 
 //    /**
 //     * @return Commande[] Returns an array of Commande objects
