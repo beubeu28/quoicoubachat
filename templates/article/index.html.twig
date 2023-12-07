@@ -108,7 +108,7 @@
       <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {% for article in articles %}
         <li>
-          <a href="" class="group block ">
+          <a href="{{ path('article_detail', { 'articleId': article.id }) }}" class="group block ">
             <img
               src="{{ article.image }}"
               alt=""

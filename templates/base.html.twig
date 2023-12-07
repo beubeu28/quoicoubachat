@@ -37,9 +37,6 @@
               <a href="{{ path('app_accueil') }}">Accueil</a>
             </li>
             <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
-              <a href="">Produits</a>
-            </li>
-            <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
               <a href="/article">Collections</a>
             </li>
             <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
@@ -47,6 +44,11 @@
               <a href="{{ path('app_messagerie_index') }}">Contact</a>
             {% else %}
               <a href="{{ path('app_messagerie_new') }}">Contact</a>
+            {% endif %}
+            {% if app.user is defined and app.user is not null and is_granted('ROLE_ADMIN') %}
+            <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
+              <a href="{{ path('admin')}}">Admin</a>
+            </li>
             {% endif %}
             
             </li>
