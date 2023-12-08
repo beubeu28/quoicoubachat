@@ -20,9 +20,8 @@ class CommandeController extends AbstractController
     {
         $user = $this->getUser();
         $id = $user->getId();
-        
         return $this->render('commande/index.html.twig', [
-            'commandes' => $commandeRepository->findUser($id),
+            'commandes' => $commandeRepository->findAll(),
         ]);
     }
 
@@ -72,14 +71,54 @@ class CommandeController extends AbstractController
         ]);
     }
 
+
+    #[Route('/modifier', name: 'app_commande_modifier', methods: ['POST'])]
+    public function modifierStatut(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $var = $request->request->get('var');
+        $commandeId = $request->request->get('id');
+    
+        $commande = $entityManager->getRepository(Commande::class)->find($commandeId);
+    
+        if (!$commande) {
+            // Gérer le cas où la commande n'est pas trouvée
+            // Redirection ou autre action appropriée
+        }
+    
+        $commande->setStatut($var);
+        $commande->setDate($commande->getDate());
+        
+    
+        // Rechargez la commande depuis la base de données
+        $commande = $entityManager->getRepository(Commande::class)->find($commandeId);
+        $entityManager->persist($commande);
+        $entityManager->flush();
+        
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
     #[Route('/{id}', name: 'app_commande_delete', methods: ['POST'])]
     public function delete(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$commande->getId(), $request->request->get('_token'))) {
+        $id = $commande->getId();
+    
+        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
             $entityManager->remove($commande);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/mescommandes/{id}', name: 'app_commande_mescommandes', methods: ['GET', 'POST'])]
+    public function mescommandes(CommandeRepository $commandeRepository,int $id): Response
+    {
+        $commandes = $commandeRepository->findAllCommandeById($id);
+        return $this->render('commande/commandes.html.twig', [
+            'commandes' => $commandes,
+        ]);
+    }
+
+
 }

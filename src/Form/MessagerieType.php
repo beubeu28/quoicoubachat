@@ -3,17 +3,17 @@
 namespace App\Form;
 
 use App\Entity\Messagerie;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MessagerieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('motif', ClassType::class, [ 'choices' => [
+            ->add('motif', ChoiceType::class, [ 'choices' => [
                 'Sélectionnez un motif' => '',
                 'Article manquant' => 'Article manquant',
                 'Divers' => 'Divers',

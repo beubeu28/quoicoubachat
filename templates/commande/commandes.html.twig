@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+    <section class="flex flex-col items-center w-full min-h-screen min-h-full bg-pink-200 text-gray-700">
+        <div class="container my-24 mx-auto md:px-6">
+            <h1 class="text-2xl font-bold mb-8">Commandes en cours</h1>
+            <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+                <table class=" border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b bg-gray-200">Id de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Date de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">montantTotal</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes %}
+                            {% if commande.statut == "En cours" %}
+                                <tr>
+                                    <td class="py-2 px-4 border-b">{{ commande.id }}</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.montantTotal }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.statut }}</td> 
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h1 class="text-2xl font-bold mb-8">Historique des commandes</h1>
+            <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+                <table class=" border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b bg-gray-200">Id de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Date de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">montantTotal</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes %}
+                            {% if commande.statut != "En cours" %}
+                                <tr>
+                                    <td class="py-2 px-4 border-b">{{ commande.id }}</td>                      
+                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.montantTotal }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.statut }}</td> 
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

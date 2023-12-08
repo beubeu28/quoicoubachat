@@ -30,7 +30,7 @@ class ArticleController extends AbstractController
     #[Route('/trier', name: 'trier', methods: ['GET'])]
     public function tri(Request $request, ArticleRepository $articleRepository): Response
     {
-        $Rechercher = $request->query->get('Rechercher');
+        $Rechercher = $request->query->get('var');
         $Type = $request->query->get('Type');
         $Univers = $request->query->get('Univers');
         $PMin = $request->query->get('PMin');
@@ -122,6 +122,7 @@ public function ajout(
 
     $commandeid = $commande->getId();
     $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByCommande($commandeid);
+    $this->addFlash('success', 'Statut mis à jour avec succès.');
     return $this->redirectToRoute('app_article_panier', ['id'=>$user->getId()], Response::HTTP_SEE_OTHER);
 }
 
