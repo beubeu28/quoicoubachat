@@ -80,11 +80,6 @@ class CommandeController extends AbstractController
     
         $commande = $entityManager->getRepository(Commande::class)->find($commandeId);
     
-        if (!$commande) {
-            // Gérer le cas où la commande n'est pas trouvée
-            // Redirection ou autre action appropriée
-        }
-    
         $commande->setStatut($var);
         $commande->setDate($commande->getDate());
         
