@@ -33,7 +33,7 @@ class DetailCommandeController extends AbstractController
         $commande->recalculateMontantTotal();
         $commande->setDate(new \DateTime);
         $entityManager->flush();
-    
+
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
