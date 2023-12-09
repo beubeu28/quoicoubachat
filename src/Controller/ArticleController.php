@@ -76,13 +76,14 @@ public function ajout(
     CommandeRepository $commandeRepository,
     DetailCommandeRepository $detailCommandeRepository
 ): Response {
-
+    
     $user = $this->getUser();
     if (!$user) {
         return $this->redirectToRoute('app_login');
     }
 
     $article = $articleRepository->find($id);
+    
     $commande = $commandeRepository->findCurrentCommandeByUser($user);
 
     if (!$commande) {
@@ -94,6 +95,7 @@ public function ajout(
     }
 
         $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
+        
     if (!$detailCommande) {
         $detailCommande = new DetailCommande();
         $detailCommande->setArticleId($article);
@@ -129,6 +131,7 @@ public function ajout(
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
     {
+        
         return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
@@ -137,6 +140,10 @@ public function ajout(
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -155,6 +162,10 @@ public function ajout(
     #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
@@ -172,6 +183,10 @@ public function ajout(
         CommandeRepository $commandeRepository,
         DetailCommandeRepository $detailCommandeRepository): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $commande = $commandeRepository->findCurrentCommandeById($id);
         if(!$commande){
             return $this->render('detail_commande\index.html.twig', [

@@ -51,12 +51,15 @@ class CommandeCrudController extends AbstractCrudController
     {
         return $actions
             ->disable(Action::NEW)
+        ;
+    }
+
+    private function isCreatePage(string $pageName): bool
+    {
+        return $actions
+            ->disable(Action::NEW)
             ->disable(Action::EDIT)
             ->disable(Action::DELETE)
         ;
     }
-
-    
-
-    
 }

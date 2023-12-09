@@ -23,6 +23,13 @@ class ArticleCrudController extends AbstractCrudController
         return Article::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW)
+        ;
+    }
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
