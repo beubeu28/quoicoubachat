@@ -30,7 +30,7 @@
                                     <td class="py-2 px-4 border-b">{{ detail_commande.articleid.nom }}</td>
                                     <td class="py-2 px-4 border-b">
                                         <img
-                                            src="{{ detail_commande.articleid.image }}"
+                                            src="{{ vich_uploader_asset(detail_commande.articleid, 'imageFile') }}"
                                             alt=""
                                             style="height: 100px; width: 100px; object-fit: contain; margin: auto;"
                                         />
