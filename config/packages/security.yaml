@@ -41,6 +41,8 @@ security:
         - { path: ^/article/new, roles: ROLE_MANAGER }
         - { path: ^/commande, roles: ROLE_MANAGER }
         - { path: ^/user, roles: ROLE_USER }
+        # - { path: ^/messgerie, roles: ROLE_USER }
+        # - { path: / , roles: ROLE_LOCK }
 
 when@test:
     security:

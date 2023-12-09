@@ -30,6 +30,9 @@ class Messagerie
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reponse = null;
+
     public function __construct()
 {
     $this->date = new \DateTime();
@@ -108,6 +111,18 @@ class Messagerie
     public function setDatee(\DateTimeInterface $datee): static
     {
         $this->datee = $datee;
+
+        return $this;
+    }
+
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    public function setReponse(?string $reponse): static
+    {
+        $this->reponse = $reponse;
 
         return $this;
     }

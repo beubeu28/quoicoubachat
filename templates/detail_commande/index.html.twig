@@ -13,7 +13,7 @@
                         <tr>
                             <th class="py-2 px-4 border-b bg-gray-200">Quantite</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Prix de l'article</th>
-                            <th class="py-2 px-4 border-b bg-gray-200">Total</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">PrixTotal</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Article</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Image</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Actions</th>
@@ -31,7 +31,6 @@
                                     <td class="py-2 px-4 border-b">
                                         <img
                                             src="{{ detail_commande.articleid.image }}"
-                                            alt=""
                                             style="height: 100px; width: 100px; object-fit: contain; margin: auto;"
                                         />
                                     </td>
@@ -82,7 +81,7 @@
                     <strong>Statut:</strong> {{ commande.statut }}
 
                     {# Bouton Valider Panier #}
-                    <form action="" method="post" class="mt-4">
+                    <form action="{{ path('app_commande_valider' , {'id' : commande.id }) }}" method="post" class="mt-4">
                         <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Valider Panier</button>
                     </form>
             {% endif %}

@@ -10,6 +10,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class MessagerieCrudController extends AbstractCrudController
 {
@@ -18,6 +20,13 @@ class MessagerieCrudController extends AbstractCrudController
         return Messagerie::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW)
+        ;
+    }
+    
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -46,6 +55,8 @@ class MessagerieCrudController extends AbstractCrudController
                 ->hideOnForm(),
             DateTimeField::new('date')
                 ->setFormTypeOption('disabled', 'disabled'),
+            TextField::new('reponse')
+                ->setLabel('Réponse'),
 
         ];
     }

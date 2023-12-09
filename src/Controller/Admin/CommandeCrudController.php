@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 class CommandeCrudController extends AbstractCrudController
 {
@@ -48,6 +50,13 @@ class CommandeCrudController extends AbstractCrudController
                 ->setFormTypeOption('attr', $this->isCreatePage($pageName) ? ['disabled' => 'disabled'] : []),
 
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW)
+        ;
     }
 
     private function isCreatePage(string $pageName): bool
