@@ -9,6 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 class DetailCommandeCrudController extends AbstractCrudController
 {
@@ -32,26 +34,26 @@ class DetailCommandeCrudController extends AbstractCrudController
             IdField::new('id')
                 ->hideOnIndex()
                 ->hideonForm(),
-            NumberField::new('quantite')
-                ->setFormTypeOption('disabled','disabled'),
+            NumberField::new('quantite'),
             NumberField::new('prixUnitaire')
-                ->setFormTypeOption('disabled','disabled')
                 ->setLabel('Prix Unitaire en €'),
             NumberField::new('prixTotal')
-                ->setFormTypeOption('disabled','disabled')
                 ->setLabel('Prix en €'),
             IdField::new('commandeid')
-                ->setLabel('ID Commande')
-                ->setFormTypeOption('disabled','disabled'),
+                ->setLabel('ID Commande'),
             IdField::new('articleid')
-                ->setLabel('ID Article')
-                ->setFormTypeOption('disabled','disabled'),
+                ->setLabel('ID Article'),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW)
+            ->disable(Action::EDIT)
+            ->disable(Action::DELETE)
+        ;
     }
     
 
-    private function isCreatePage(string $pageName): bool
-    {
-         return 'new' === $pageName;
-     }
 }

@@ -50,7 +50,16 @@
             {% if app.user is defined and app.user is not null and is_granted('ROLE_ADMIN') %}
               <a href="{{ path('admin')}}" class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">Admin</a>
             {% endif %}
-          </li>
+            {% if app.user is defined and app.user is not null and is_granted('ROLE_MANAGER') %}
+            <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
+              <a href="{{ path('app_commande_index')}}">Commande</a>
+            </li>
+            <li class="p-4 border-b-2 border-pink-200 border-opacity-0 hover:border-opacity-100 hover:text-pink-200 duration-200 cursor-pointer">
+              <a href="{{ path('app_article_new')}}">Produits</a>
+            </li>
+            {% endif %}
+            
+            </li>
         </ul>
     </nav>
 

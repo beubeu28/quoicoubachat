@@ -29,18 +29,18 @@
     <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {% for article in articles[:16] %}
       <li>
-        <a href="" class="group block overflow-hidden">
+        <a href="{{ path('app_article_show', {'id': article.id}) }}" class="group block">
           <img
             src="{{ vich_uploader_asset(article, 'imageFile') }}"
             alt=""
             style="height: 200px; width: 200px;object-fit: contain;margin: auto;"
             class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-125 sm:h-[450px]"
           />
-
-          <div class="relative bg-white pt-3">
-            <h3 style="color: #E3618E;text-align: center;" class="group-hover:underline group-hover:underline-offset-4">
-              {{article.nom}}
-            </h3>
+          
+            <div class="relative bg-gradient-to-t from-white via-white via-80% to-transparent pt-3">
+              <h3 style="color: #E3618E;text-align: center;" class="group-hover:underline group-hover:underline-offset-4">
+                {{article.nom}}
+              </h3>
 
             <p class="mt-2">
               <span class="tracking-wider text-gray-900"> {{article.prix}} € </span>

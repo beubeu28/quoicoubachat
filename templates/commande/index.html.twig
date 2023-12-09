@@ -3,37 +3,63 @@
 {% block title %}Commande index{% endblock %}
 
 {% block body %}
-    <h1>Commande index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>MontantTotale</th>
-                <th>Statut</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
-            <tr>
-                <td>{{ commande.id }}</td>
-                <td>{{ commande.date ? commande.date|date('Y-m-d') : '' }}</td>
-                <td>{{ commande.montantTotale }}</td>
-                <td>{{ commande.statut }}</td>
-                <td>
-                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
-                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_commande_new') }}">Create new</a>
+    <section class="flex flex-col items-center w-full min-h-screen min-h-full bg-pink-200 text-gray-700">
+        <div class="container my-24 mx-auto md:px-6">
+            <h1 class="text-2xl font-bold mb-8">Commande</h1>
+    
+            <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+                <table class=" border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b bg-gray-200">Id de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Utilisateur</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Date de la commande</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">montantTotal</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Statut</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if commandes|length > 0 %}
+                            {% for commande in commandes %}
+                                <tr>
+                                    <td class="py-2 px-4 border-b">{{ commande.id }}</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.utilisateurid.email }}</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.montantTotal }} €</td>
+                                    <td class="py-2 px-4 border-b">
+                                            <form action="{{ path('app_commande_modifier', {'id': commande.id}) }}" method="post">
+                                                <input type="hidden" name="id" value="{{ commande.id }}">
+                                                <select name="var" class="border border-grey-200 rounded overflow-hidden w-30">
+                                                    <option value="{{commande.statut}}" selected>{{commande.statut}}</option>
+                                                    <option value="En cours">En cours</option>
+                                                    <option value="En cours de livraison">En cours de livraison</option>
+                                                    <option value="Livré">Livré</option>
+                                                    <option value="Terminée">Terminée</option>
+                                                    <option value="Annulée">Annulée</option>
+                                                </select>
+                                                <input type="submit" value="Valider" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+                                            </form>
+                                    </td>
+                                    <td class="py-2 px-4 border-b">
+                                        <form action="{{ path ('app_commande_delete', {'id': commande.id} ) }}" method="post">
+                                            <input type="hidden" name="id" value="{{ commande.id }}">
+                                            <button type="submit" class="bg-pink-500 text-white px-3 py-1">Supprimer</button> 
+                                        </form>
+                                    </td>                  
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
+                                    <div class="bg-pink-200 p-8 rounded-lg shadow-lg mb-8">
+                                        <strong>Pas de commande</strong>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                </br>
+    </section>
 {% endblock %}
+

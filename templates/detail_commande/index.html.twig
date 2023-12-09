@@ -12,7 +12,7 @@
                     <thead>
                         <tr>
                             <th class="py-2 px-4 border-b bg-gray-200">Quantite</th>
-                            <th class="py-2 px-4 border-b bg-gray-200">PrixUnitaire</th>
+                            <th class="py-2 px-4 border-b bg-gray-200">Prix de l'article</th>
                             <th class="py-2 px-4 border-b bg-gray-200">PrixTotal</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Article</th>
                             <th class="py-2 px-4 border-b bg-gray-200">Image</th>
@@ -58,6 +58,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                            <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
+                                <form action="{{ path('app_commande_mescommandes', {'id': app.getUser().id }) }}" method="post">
+                                    <input type="hidden" name="id" value="{{ app.getUser().id }}">
+                                <button type="submit" class="bg-pink-500 text-white px-3 py-1">mes commandes</button>
+                            </td>
+                            </form> 
+                        </tr>
                         {% endif %}
                     </tbody>
                 </table>
@@ -74,11 +82,11 @@
                     <strong>Statut:</strong> {{ commande.statut }}
 
                     {# Bouton Valider Panier #}
-                    <form action="" method="post" class="mt-4">
+                    <form action="{{ path('app_commande_valider' , {'id' : commande.id }) }}" method="post" class="mt-4">
                         <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Valider Panier</button>
                     </form>
             {% endif %}
         </div>
         {% endif %}
-    </section>
+        </section>
 {% endblock %}

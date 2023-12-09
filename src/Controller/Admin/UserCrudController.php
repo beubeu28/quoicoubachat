@@ -5,11 +5,15 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormTypeInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -26,27 +30,37 @@ class UserCrudController extends AbstractCrudController
         ;
     }
 
+    public static function getEntityId(): string
+    {
+        return User::class;
+    }
     
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id')
-                ->hideOnForm(),
-            TextField::new('nom'),
-            TextField::new('prenom'),
-            TextField::new('email')
-                ->setFormTypeOption('attr', $this->isEditPage($pageName) ? ['disabled' => 'disabled'] : []),
-            TextField::new('telephone')
-                ->setFormTypeOption('attr', $this->isEditPage($pageName) ? ['disabled' => 'disabled'] : []),
-            ArrayField::new('roles')
-                ->hideOnIndex(),
-
-        ];
+        {
+            $rolesOptions = [
+                'ROLE_USER' => 'ROLE_USER',
+                'ROLE_ADMIN' => 'ROLE_ADMIN',
+                'ROLE_LOCK' => 'ROLE_LOCK',
+                'ROLE_MANAGER' => 'ROLE_MANAGER',
+            ];
+            
+            return [
+                IdField::new('id')->hideOnForm(),
+                TextField::new('nom'),
+                TextField::new('prenom'),
+                TextField::new('email'),
+                ChoiceField::new('roles')
+                    ->setChoices($rolesOptions)
+                    ->allowMultipleChoices()
+                    ->setRequired(true)
+                    ->setFormTypeOptions([
+                        'choices' => $rolesOptions,
+                        ])
+                    ->onlyOnForms(),
+                    ArrayField::new('roles')->onlyOnIndex(),
+                    TextField::new('telephone'),
+            ];
+        }
     }
-
-    private function isEditPage(string $pageName): bool
-    {
-        return 'edit' === $pageName;
-    }
-    
 }

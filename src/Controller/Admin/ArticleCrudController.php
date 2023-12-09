@@ -12,12 +12,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+
 
 class ArticleCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Article::class;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW)
+            ->disable(Action::EDIT)
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -33,15 +44,13 @@ class ArticleCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')
-                ->setLabel('ID')
-                ->setFormTypeOption('disabled','disabled'),
+                ->setLabel('ID'),
             TextField::new('nom'),
             TextField::new('description'),
             IntegerField::new('stock'),
             NumberField::new('prix')
-                ->setLabel('Prix en €')
-                ,
+                ->setLabel('Prix en €'),
         ];
     }
-    
+
 }
