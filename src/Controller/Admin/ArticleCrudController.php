@@ -27,6 +27,7 @@ class ArticleCrudController extends AbstractCrudController
     {
         return $actions
             ->disable(Action::NEW)
+            ->disable(Action::EDIT)
         ;
     }
 
@@ -51,15 +52,5 @@ class ArticleCrudController extends AbstractCrudController
                 ->setLabel('Prix en €'),
         ];
     }
-    
-
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->disable(Action::NEW)
-            ->disable(Action::EDIT)
-        ;
-    }
-
 
 }
