@@ -36,18 +36,13 @@ class CommandeCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')
-                ->setLabel('Numéro de commande')
-                ->setFormTypeOption('disabled','disabled'),
-            TextField::new('statut')
-                ->setFormTypeOption('attr', $this->isCreatePage($pageName) ? ['disabled' => 'disabled'] : []),
-            NumberField::new('montant_Totale')
-                ->setFormTypeOption('attr', $this->isCreatePage($pageName) ? ['disabled' => 'disabled'] : [])
+                ->setLabel('Numéro de commande'),
+            TextField::new('statut'),
+            NumberField::new('montant_Total')
                 ->setLabel('Prix en €'),
             IdField::new('utilisateurid')
-                ->setLabel('ID Utilsateur')
-                ->setFormTypeOption('disabled','disabled'),
-            DateTimeField::new('date')
-                ->setFormTypeOption('attr', $this->isCreatePage($pageName) ? ['disabled' => 'disabled'] : []),
+                ->setLabel('ID Utilsateur'),
+            DateTimeField::new('date'),
 
         ];
     }
@@ -61,8 +56,10 @@ class CommandeCrudController extends AbstractCrudController
 
     private function isCreatePage(string $pageName): bool
     {
-        return 'new' === $pageName;
+        return $actions
+            ->disable(Action::NEW)
+            ->disable(Action::EDIT)
+            ->disable(Action::DELETE)
+        ;
     }
-
-    
 }
