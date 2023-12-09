@@ -45,6 +45,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MANAGER')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $article = new Article();
@@ -85,17 +86,19 @@ public function ajout(
     $article = $articleRepository->find($id);
     
     $commande = $commandeRepository->findCurrentCommandeByUser($user);
-
     if (!$commande) {
         $commande = new Commande();
         $commande->setDate(new \DateTime());
         $commande->setStatut('En cours');
         $commande->setUtilisateurId($user);
+        $commande->setMontantTotal(0);
         $entityManager->persist($commande);
+        $entityManager->flush();
+
     }
 
-        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id);
-        
+        $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id,$commande->getId());
+        // var_dump($detailCommande);
     if (!$detailCommande) {
         $detailCommande = new DetailCommande();
         $detailCommande->setArticleId($article);
@@ -138,6 +141,7 @@ public function ajout(
     }
 
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MANAGER')]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -160,6 +164,7 @@ public function ajout(
     }
 
     #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_MANAGER')]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

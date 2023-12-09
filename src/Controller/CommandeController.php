@@ -15,7 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
-    #[Route('/', name: 'app_commande_index', methods: ['GET'])]
+    #[Route('/manager', name: 'app_commande_index', methods: ['GET'])]
+    #[IsGranted('ROLE_MANAGER')]
     public function index(CommandeRepository $commandeRepository): Response
     {
         $user = $this->getUser();

@@ -61,7 +61,7 @@
                             <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
                                 <form action="{{ path('app_commande_mescommandes', {'id': app.getUser().id }) }}" method="post">
                                     <input type="hidden" name="id" value="{{ app.getUser().id }}">
-                                <button type="submit" class="bg-pink-500 text-white px-3 py-1">mes commandes</button>
+                                <button  class="bg-pink-500 text-white px-3 py-1">mes commandes</button>
                             </td>
                             </form> 
                         </tr>
@@ -84,6 +84,13 @@
                     <form action="{{ path('app_commande_valider' , {'id' : commande.id }) }}" method="post" class="mt-4">
                         <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Valider Panier</button>
                     </form>
+                    <span style="visibility: hidden;">,</span>
+                    <td colspan="6" class="py-2 px-4 border-b bg-gray-200">
+                        <form action="{{ path('app_commande_mescommandes', {'id': app.getUser().id }) }}" method="post">
+                        <input type="hidden" name="id" value="{{ app.getUser().id }}">
+                        <button class="bg-pink-500 text-white px-3 py-1">mes commandes</button>
+                    </td>
+                    
             {% endif %}
         </div>
         {% endif %}
