@@ -31,36 +31,30 @@ class MessagerieController extends AbstractController
     #[Route('/new', name: 'app_messagerie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
         $messagerie = new Messagerie();
         $user = $this->getUser();
-        $messagerie->setUtilisateur($user);
-        
-
+    
         if ($user !== null) {
             $userEmail = $user->getEmail();
-
             $messagerie->setUserMail($userEmail);
-        
-          $form = $this->createForm(MessagerieType::class, $messagerie);
-          $form->handleRequest($request);
-
-          if ($form->isSubmitted() && $form->isValid()) {
-              $entityManager->persist($messagerie);
-              $entityManager->flush();
-
-              return $this->redirectToRoute('app_messagerie_mesDemandes');
-          }
-
-          return $this->renderForm('messagerie/new.html.twig', [
-              'messagerie' => $messagerie,
-              'form' => $form,
-          ]); 
-      }else{
-          return $this->redirectToRoute('app_register');
-
-      }
-
+    
+            $form = $this->createForm(MessagerieType::class, $messagerie);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($messagerie);
+                $entityManager->flush();
+    
+                return $this->redirectToRoute('app_messagerie_mesDemandes');
+            }
+    
+            return $this->renderForm('messagerie/new.html.twig', [
+                'messagerie' => $messagerie,
+                'form' => $form,
+            ]);
+        } else {
+            return $this->redirectToRoute('app_register');
+        }
     }
 
     #[Route('/mesDemandes', name: 'app_messagerie_mesDemandes', methods: ['GET', 'POST'])]
