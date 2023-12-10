@@ -18,6 +18,10 @@ class DetailCommandeController extends AbstractController
     
     #[Route('/moins/{id}', name: 'app_detail_commande_moins', methods: ['POST'])]
     public function qmoins(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $commande = $detailCommande->getCommandeid();
         $article = $detailCommande->getArticleid();
         $newQuantity = $detailCommande->getQuantite() - 1;
@@ -33,13 +37,17 @@ class DetailCommandeController extends AbstractController
         $commande->recalculateMontantTotal();
         $commande->setDate(new \DateTime);
         $entityManager->flush();
-    
+
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
     
     #[Route('/plus{id}', name: 'app_detail_commande_plus', methods: ['POST'])]
     public function qplus(Request $request, EntityManagerInterface $entityManager, DetailCommande $detailCommande): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $commande = $detailCommande->getCommandeid();
         $article = $detailCommande->getArticleid();
         if($article->getStock()==0){
@@ -62,6 +70,10 @@ class DetailCommandeController extends AbstractController
     #[Route('/', name: 'app_detail_commande_index', methods: ['GET'])]
     public function index(DetailCommandeRepository $detailCommandeRepository): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('detail_commande/index.html.twig', [
             'detail_commandes' => $detailCommandeRepository->findAll(),
         ]);
@@ -70,6 +82,10 @@ class DetailCommandeController extends AbstractController
     #[Route('/new', name: 'app_detail_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $detailCommande = new DetailCommande;
         $form = $this->createForm(DetailCommandeType::class, $detailCommande);
         $form->handleRequest($request);
@@ -91,6 +107,10 @@ class DetailCommandeController extends AbstractController
     #[Route('/{id}', name: 'app_detail_commande_show', methods: ['GET'])]
     public function show(DetailCommande $detailCommande): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('detail_commande/show.html.twig', [
             'detail_commande' => $detailCommande,
         ]);
@@ -99,6 +119,10 @@ class DetailCommandeController extends AbstractController
     #[Route('/{id}/edit', name: 'app_detail_commande_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, DetailCommande $detailCommande, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(DetailCommandeType::class, $detailCommande);
         $form->handleRequest($request);
 
@@ -117,6 +141,10 @@ class DetailCommandeController extends AbstractController
     #[Route('/{id}', name: 'app_detail_commande_delete', methods: ['POST'])]
     public function delete(Request $request, DetailCommande $detailCommande, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         if ($this->isCsrfTokenValid('delete'.$detailCommande->getId(), $request->request->get('_token'))) {
             $entityManager->remove($detailCommande);
             $entityManager->flush();

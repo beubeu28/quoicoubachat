@@ -44,6 +44,16 @@ public function findCurrentCommandeById(int $id): ?Commande
         ->getOneOrNullResult()
     ;
 }
+
+public function findAllCommandeById(int $id): array
+{
+    return $this->createQueryBuilder('c')
+        ->andWhere('c.utilisateurid = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getResult()
+    ;
+}
     public function findUser(int $id): ?Commande
     {
         return $this->createQueryBuilder('c')
