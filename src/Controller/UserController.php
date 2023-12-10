@@ -32,7 +32,6 @@ class UserController extends AbstractController
                 ->add('email')
                 ->add('nom')
                 ->add('prenom')
-                ->add('password',PasswordType::class)
                 ->add('telephone')
                 ->getForm();
 
