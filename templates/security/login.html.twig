@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Connexion{% endblock %}
+
 
 {% block body %}
 
@@ -9,12 +10,6 @@
 <h1 class="p-8 font-bold text-2xl">Connexion</h1>
 
 <form method="post">
-
-
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
     
 
     <div class="w-96 p-12 bg-white rounded shadow-lg" >
@@ -36,7 +31,10 @@
         <button class="flex items-center justify-center h-12 px-6 w-64 bg-pink-200 mt-8 rounded font-semibold text-sm text-gray-700 hover:bg-pink-500" type="submit">
             Connexion
         </button>
-
+        
+        {% if error %}
+        {{ error.messageKey|trans(error.messageData, 'security') }}
+        {% endif %}
 
     </div>
     
