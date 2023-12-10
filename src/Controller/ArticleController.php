@@ -98,7 +98,6 @@ public function ajout(
     }
 
         $detailCommande = $detailCommandeRepository->findCurrentDetailCommandeByArticle($id,$commande->getId());
-        // var_dump($detailCommande);
     if (!$detailCommande) {
         $detailCommande = new DetailCommande();
         $detailCommande->setArticleId($article);
