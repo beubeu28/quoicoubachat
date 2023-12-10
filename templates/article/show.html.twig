@@ -25,23 +25,32 @@
           <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
             Article non disponible
           </button>
+          </form>
         {% else %}
-        <form action="{{ path('app_article_ajout', {'id': article.id}) }}" method="get">
-          <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
-            Ajouter au panier
-          </button>
+          <form action="{{ path('app_article_ajout', {'id': article.id}) }}" method="get">
+            <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+              Ajouter au panier
+            </button>
+          </form>
         {% endif %}
+        </br>
+        <form action="{{ path('app_article_index') }}" method="get">
+          <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+          Retourner aux articles 
+          </button>
+        </form> 
+        {% if is_granted('ROLE_MANAGER') %}
+        </br>
+        <form action="{{ path('app_article_edit', {'id': article.id}) }}" method="get">
+        <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
+         Modifier l'article
         </form>
-      </div>
+
+        {% endif %}
     </div>
   </section>
 </div>
 
-{#
-    <a href="{{ path('app_article_index') }}">back to list</a>
+ 
 
-    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
-
-    {{ include('article/_delete_form.html.twig') }}
-#}
 {% endblock %}
