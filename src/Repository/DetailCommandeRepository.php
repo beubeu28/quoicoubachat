@@ -21,11 +21,13 @@ class DetailCommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, DetailCommande::class);
     }
 
-    public function findCurrentDetailCommandeByArticle(int $id): ?DetailCommande
+    public function findCurrentDetailCommandeByArticle(int $id,int $commande): ?DetailCommande
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.articleid = :id')
+            ->andWhere('d.commandeid = :commande')
             ->setParameter('id', $id)
+            ->setParameter('commande', $commande)
             ->getQuery()
             ->getOneOrNullResult();
     }
