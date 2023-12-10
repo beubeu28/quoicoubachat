@@ -54,6 +54,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_commande_show', methods: ['GET'])]
+    #[IsGranted('ROLE_MANAGER')]
     public function show(Commande $commande): Response
     {
         $user = $this->getUser();
@@ -66,6 +67,8 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_commande_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MANAGER')]
+
     public function edit(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -88,8 +91,8 @@ class CommandeController extends AbstractController
     }
 
 
-    #[Route('/modifier', name: 'app_commande_modifier', methods: ['POST'])]
-    public function modifierStatut(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/modifier/{id}', name: 'app_commande_modifier', methods: ['POST'])]
+    public function modifierStatut(Request $request, EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -99,14 +102,8 @@ class CommandeController extends AbstractController
         $commandeId = $request->request->get('id');
     
         $commande = $entityManager->getRepository(Commande::class)->find($commandeId);
-
-        if (!$commande) {
-            // Gérer le cas où la commande n'est pas trouvée
-            // Redirection ou autre action appropriée
-        }
     
-    
-        $commande->setStatut("En cours de livraison");
+        $commande->setStatut($var);
         $commande->setDate($commande->getDate());
         
         $commande = $entityManager->getRepository(Commande::class)->find($id);
