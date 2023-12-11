@@ -45,8 +45,18 @@ class AppFixtures extends Fixture
         $users[] = $admin;
         $manager->persist($admin);
 
-        // CREATION FAUX UTILISATEURS 
-        
+        // CREATION MANAGER 
+        $gestion = new User();
+        $gestion
+            ->setNom('Manger')
+            ->setPrenom('Quoicoubachat')
+            ->setEmail('manage@quoicoubachat.fr')
+            ->setRoles(['ROLE_USER', 'ROLE_MANAGER'])
+            ->setPassword('$2y$13$LZWQC3ejxi5yclqxNYkHiOkC615/4onX9s1YLQKrIv6NrLbR1.QAe');
+
+            
+        $users[] = $gestion;
+        $manager->persist($gestion);
 
         
 
