@@ -93,3 +93,6 @@ INSERT INTO `article` (`id`, `nom`, `prix`, `description`, `stock`, `fichier`, `
 
 INSERT INTO `user` (`id`, `email`, `roles`, `nom`, `prenom`, `password`, `telephone`) VALUES
 (1, 'admin@admin.com', '[\"ROLE_ADMIN\"]', 'admin', 'admin', '$2y$13$5tR6ShLNTBrgr9PBKgKqfOMX0siMFaDOgdc5E4CmWsir0Ks7uB/DW', 01);
+
+INSERT INTO `user` (`id`, `email`, `roles`, `nom`, `prenom`, `password`, `telephone`) VALUES
+(2, 'manager@manager.com', '[\"ROLE_MANAGER\"]', 'manager', 'manager', '$2y$13$4BEMOfDbyntsEgJbq8hGqexw7b3CjGv2XJpk6ybE87Mdst.vYSQ/a', NULL);
