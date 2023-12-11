@@ -10,11 +10,11 @@ Lancement du projet :
       - symfony console make:migration
       - symfony console doctrine:migration:migrate
       - symfony console doctrine:fixtures:load
-  -importer le fichier data.sql dans la base de données via phpmyadmin
-  -aller dans le fichier php.ini de votre dossier C:/xampp
-  -décommenter extension=intl
-  -mettre à jour les composer avec "composer update"
-  -lancer votre serveur local avec xampp
-  -lancer votre serveur local symfony avec la commande "symfony serve"
-  -aller sur l'adresse qui vous est donnée
-  -Vous pouvez désormais regarder le projet.
+  - importer le fichier data.sql dans la base de données via phpmyadmin
+  - aller dans le fichier php.ini de votre dossier C:/xampp
+  - décommenter extension=intl
+  - mettre à jour les composer avec "composer update"
+  - lancer votre serveur local avec xampp
+  - lancer votre serveur local symfony avec la commande "symfony serve"
+  - aller sur l'adresse qui vous est donnée
+  - Vous pouvez désormais regarder le projet.
