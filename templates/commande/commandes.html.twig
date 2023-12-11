@@ -21,7 +21,7 @@
                             {% if commande.statut == "En cours" %}
                                 <tr>
                                     <td class="py-2 px-4 border-b">{{ commande.id }}</td>
-                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }}</td>
                                     <td class="py-2 px-4 border-b">{{ commande.montantTotal }} €</td>
                                     <td class="py-2 px-4 border-b">{{ commande.statut }}</td> 
                                 </tr>
@@ -47,7 +47,7 @@
                             {% if commande.statut != "En cours" %}
                                 <tr>
                                     <td class="py-2 px-4 border-b">{{ commande.id }}</td>                      
-                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }} €</td>
+                                    <td class="py-2 px-4 border-b">{{ commande.date ? commande.date.format('Y-m-d H:i:s') : 'N/A' }}</td>
                                     <td class="py-2 px-4 border-b">{{ commande.montantTotal }} €</td>
                                     <td class="py-2 px-4 border-b">{{ commande.statut }}</td> 
                                 </tr>
