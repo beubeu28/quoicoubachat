@@ -39,16 +39,27 @@
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ messagerie.date ? messagerie.date.format('Y-m-d H:i:s') : 'N/A' }}
                 </dd>
+                {% if vich_uploader_asset(messagerie,'imageFile') is not empty %}
                 <dt class="text-sm font-medium text-gray-500">
                     Fichier Complémentaire
                 </dt>
-                {% if vich_uploader_asset(messagerie,'imageFile') is not empty %}
+                
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <a download href="{{ vich_uploader_asset(messagerie, 'imageFile')  }}  "
                     class="border border-grey-200 bg-pink-200 rounded " > Télécharger '{{messagerie.ImageName}}'</a>
+                
+                </dd>
+                {% endif %}
+                {% if messagerie.reponse %}
+                <dt class="text-sm font-medium text-gray-500">
+                    Reponse de l'administrateur
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {{ messagerie.reponse  }} 
                 </dd>
                 {% endif %}
                 {{ include('messagerie/_delete_form.html.twig') }} 
+
             </div>
         </div>
         {% endfor %}

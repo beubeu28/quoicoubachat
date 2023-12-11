@@ -90,3 +90,9 @@ INSERT INTO `article` (`id`, `nom`, `prix`, `description`, `stock`, `fichier`, `
 (83, 'Figurine Gaara',94,'Figurine de Gaara du manga Naruto',73, NULL, 'gaara.png', '2023-12-10 17:06:23'),
 (84, 'Figurine Jiraya',112,'Figurine de Jiraya du manga Naruto',3, NULL, 'jiraya.webp', '2023-12-10 17:06:23')
 ;
+
+INSERT INTO `user` (`id`, `email`, `roles`, `nom`, `prenom`, `password`, `telephone`) VALUES
+(1, 'admin@admin.com', '[\"ROLE_ADMIN\"]', 'admin', 'admin', '$2y$13$5tR6ShLNTBrgr9PBKgKqfOMX0siMFaDOgdc5E4CmWsir0Ks7uB/DW', 01);
+
+INSERT INTO `user` (`id`, `email`, `roles`, `nom`, `prenom`, `password`, `telephone`) VALUES
+(2, 'manager@manager.com', '[\"ROLE_MANAGER\"]', 'manager', 'manager', '$2y$13$4BEMOfDbyntsEgJbq8hGqexw7b3CjGv2XJpk6ybE87Mdst.vYSQ/a', NULL);

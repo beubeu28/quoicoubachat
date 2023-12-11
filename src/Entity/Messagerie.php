@@ -42,6 +42,9 @@ class Messagerie
     #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reponse = null;
+
     public function __construct()
     {
     $this->date = new \DateTime();
@@ -134,6 +137,18 @@ class Messagerie
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    public function setReponse(?string $reponse): static
+    {
+        $this->reponse = $reponse;
+
+        return $this;
     }
 
 
