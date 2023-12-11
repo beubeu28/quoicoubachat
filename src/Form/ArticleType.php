@@ -18,8 +18,9 @@ class ArticleType extends AbstractType
             ->add('prix')
             ->add('description')
             ->add('stock')
-            ->add('imageFile', VichImageType::class)
-        ;
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
