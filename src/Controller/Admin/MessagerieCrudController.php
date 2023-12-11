@@ -62,9 +62,4 @@ class MessagerieCrudController extends AbstractCrudController
     }
     
 
-    private function isCreatePage(string $pageName): bool
-    {
-         return 'new' === $pageName;
-     }
-
 }
